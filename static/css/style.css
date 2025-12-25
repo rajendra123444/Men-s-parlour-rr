@@ -1,0 +1,204 @@
+/* Tumhara exact background: Red+Blue 45° diagonal lines, 10px thick, 2px spacing */
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+    background-image: 
+        /* Red lines */
+        repeating-linear-gradient(
+            45deg,
+            rgba(220, 20, 60, 0.8) 0px,
+            rgba(220, 20, 60, 0.8) 10px,
+            transparent 10px,
+            transparent 12px
+        ),
+        /* Blue lines */
+        repeating-linear-gradient(
+            -45deg,
+            rgba(30, 144, 255, 0.8) 0px,
+            rgba(30, 144, 255, 0.8) 10px,
+            transparent 10px,
+            transparent 12px
+        );
+    background-size: 100px 100px;
+}
+
+/* Main white box (75% background visibility) */
+.main-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.main-box {
+    background: rgba(255, 255, 255, 0.75); /* 75% visibility */
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 40px;
+    width: 100%;
+    max-width: 500px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    border: 1px solid rgba(255,255,255,0.5);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Background pattern inside box ~40% visible */
+.main-box::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: inherit;
+    opacity: 0.4; /* 40% visible inside box */
+    z-index: -1;
+    border-radius: 20px;
+}
+
+/* Barber logo */
+.barber-logo {
+    font-size: 4rem;
+    display: inline-block;
+    animation: spin 3s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Role buttons */
+.role-btn {
+    border-radius: 15px;
+    font-size: 1.1rem;
+    padding: 12px 20px;
+    transition: all 0.3s ease;
+}
+
+.role-btn.active, .role-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+/* Customer Dashboard Header (Blue) */
+.customer-header {
+    background: linear-gradient(135deg, #1e90ff, #4169e1);
+    color: white;
+    padding: 20px;
+    border-radius: 15px 15px 0 0;
+    margin: -40px -40px 30px -40px;
+}
+
+/* Profile Table (3x2, transparent white, shadow) */
+.profile-table {
+    background: rgba(255,255,255,0.9);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    border: none;
+    overflow: hidden;
+}
+
+.profile-table th,
+.profile-table td {
+    padding: 15px 20px;
+    border: none;
+    font-size: 1rem;
+}
+
+.profile-table th {
+    background: linear-gradient(135deg, #ff4500, #ff6347);
+    color: white;
+    font-weight: 600;
+}
+
+/* Grid view (default, 3px gap: vertical red, horizontal blue) */
+.styles-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 3px;
+    margin-bottom: 30px;
+}
+
+.styles-grid .card {
+    border: none;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.styles-grid .card:hover {
+    transform: translateY(-5px);
+}
+
+/* Card view toggle */
+.styles-list {
+    display: none;
+}
+
+.card-toggle.active .styles-grid { display: none; }
+.card-toggle.active .styles-list { display: block; }
+
+/* Grid gaps coloring */
+.styles-grid > *:nth-child(3n) { border-right: 3px solid #1e90ff; }
+.styles-grid > *:nth-child(3n-2) { border-bottom: 3px solid #dc143c; }
+
+/* Appointment section */
+.appointment-section {
+    background: rgba(255,255,255,0.9);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    margin-top: 30px;
+}
+
+/* Mobile safe sizing */
+@media (max-width: 768px) {
+    .main-box { margin: 20px; padding: 20px; }
+    .profile-table th, .profile-table td { padding: 10px 12px; font-size: 0.9rem; }
+    .styles-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+}
+
+/* Profile picture circular */
+.profile-pic {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #1e90ff;
+}
+
+/* Buttons */
+.btn-lg-custom {
+    padding: 12px 30px;
+    font-size: 1.1rem;
+    border-radius: 25px;
+    font-weight: 600;
+}
+
+/* Scrollable sections */
+.scrollable {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+/* Appointment popup */
+.booking-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    max-width: 400px;
+    width: 90%;
+    display: none;
+}
