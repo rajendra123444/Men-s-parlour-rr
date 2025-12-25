@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}R&R Admin Dashboard{% endblock %}
+
+{% block content %}
+<div class="main-container">
+    <div class="main-box p-5">
+        <!-- Admin Profile -->
+        <div class="row mb-5">
+            <div class="col-md-8">
+                <h3>👑 Admin Control Panel</h3>
+                <p>Login ID: {{ admin_user.login_id }} | {{ admin_user.name }}</p>
+            </div>
+            <div class="col-md-4 text-end">
+                <form method="POST" action="{{ url_for('admin_update_profile') }}" class="d-inline">
+                    <input type="text" name="login_id" value="{{ admin_user.login_id }}" class="form-control d-inline-block w-auto" style="width: 150px;">
+                    <input type="password" name="password" placeholder="New Password" class="form-control d-inline-block w-auto mt-2" style="width: 150px;">
+                    <button type="submit" class="btn btn-primary mt-2">Save</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="row text-center mb-5">
+            <div class="col-md-6">
+                <h2 class="text-primary">{{ total_customers }}</h2>
+                <p>Total Customers</p>
+            </div>
+            <div class="col-md-6">
+                <h2 class="text-success">{{ total_owners }}</h2>
+                <p>Total Shop Owners</p>
+            </div>
+        </div>
+
+        <!-- Shop Owner Approval -->
+        <h4>Shop Owner Approvals</h4>
+        <div class="scrollable">
+            {% for owner in owners %}
+            <div class="card mb-3">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <h6>{{ owner.shop_name }}</h6>
+                            <p>{{ owner.owner_name }} | {{ owner.mobile }}</p>
+                        </div>
+                        <div class="col-md-4">
+                            <span class="badge bg-{{ owner.status === 'active' ? 'success' : owner.status === 'rejected' ? 'danger' : 'warning' }} fs-6">
+                                {{ owner.status }}
+                            </span>
+                        </div>
+                        <div class="col-md-4 text-end">
+                            {% if owner.status != 'active' %}
+                            <form method="POST" action="{{ url_for('admin_owner_status') }}" class="d-inline">
+                                <input type="hidden" name="owner_id" value="{{ owner.id }}">
+                                <button type="submit" name="status" value="active" class="btn btn-success btn-sm me-1">✅ Approve</button>
+                                <button type="submit" name="status" value="rejected" class="btn btn-danger btn-sm">❌ Reject</button>
+                            </form>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="text-center mt-4">
+            <a href="{{ url_for('logout') }}" class="btn btn-outline-secondary">Logout</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

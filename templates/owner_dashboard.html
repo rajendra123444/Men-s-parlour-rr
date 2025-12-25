@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}Shop Owner Dashboard{% endblock %}
+
+{% block content %}
+<div class="main-container">
+    <div class="main-box">
+        <div class="text-center mb-4">
+            <h2>{{ owner.shop_name }}</h2>
+            <p class="text-muted">{{ owner.owner_name }} | {{ owner.mobile }}</p>
+        </div>
+
+        <!-- Add Hairstyle Form -->
+        <form method="POST" action="{{ url_for('owner_add_hairstyle') }}" enctype="multipart/form-data" class="mb-5">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <input type="text" name="name" class="form-control form-control-lg" placeholder="Hairstyle Name" required>
+                </div>
+                <div class="col-md-6">
+                    <input type="text" name="description" class="form-control form-control-lg" placeholder="Description (optional)">
+                </div>
+                <div class="col-12">
+                    <input type="file" name="photos" class="form-control form-control-lg" multiple accept="image/*" required>
+                </div>
+                <div class="col-12">
+                    <button type="submit" class="btn btn-success btn-lg w-100">➕ Add Hairstyle Photos</button>
+                </div>
+            </div>
+        </form>
+
+        <!-- Bookings -->
+        <h4>📅 Bookings</h4>
+        <div class="scrollable mb-4">
+            {% for booking in bookings %}
+            <div class="card mb-2">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h6>{{ booking.customer_name }}</h6>
+                            <small>{{ booking.mobile }} | {{ booking.time_slot }}</small>
+                        </div>
+                        <div>
+                            <span class="badge bg-{{ booking.status === 'accepted' ? 'success' : booking.status === 'rejected' ? 'danger' : 'warning' }}">
+                                {{ booking.status }}
+                            </span>
+                        </div>
+                    </div>
+                    {% if booking.status == 'pending' %}
+                    <form method="POST" action="{{ url_for('booking_action') }}" class="mt-2">
+                        <input type="hidden" name="booking_id" value="{{ booking.id }}">
+                        <button type="submit" name="action" value="accept" class="btn btn-success btn-sm me-1">Accept</button>
+                        <button type="submit" name="action" value="reject" class="btn btn-danger btn-sm">Reject</button>
+                    </form>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="text-center">
+            <a href="{{ url_for('logout') }}" class="btn btn-outline-secondary">Logout</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
